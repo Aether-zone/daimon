@@ -1,0 +1,66 @@
+{
+  "name": "@aether-zone/daimon",
+  "version": "0.1.0",
+  "description": "The pistis OAuth client for aether-zone's Next.js apps: the authorization code flow, the session cookies it lands in, and the route handlers that drive it.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.ts",
+      "import": "./dist/ui/index.js"
+    },
+    "./config": {
+      "types": "./dist/config-entry/index.d.ts",
+      "import": "./dist/config-entry/index.js"
+    },
+    "./upload": {
+      "types": "./dist/upload.d.ts",
+      "import": "./dist/upload.js"
+    },
+    "./format": {
+      "types": "./dist/format.d.ts",
+      "import": "./dist/format.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aether-zone/daimon.git",
+    "directory": "libs/daimon"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "next": "^16.0.0",
+    "oauth4webapi": "^3.8.7",
+    "react": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "next": "^16.3.2",
+    "oauth4webapi": "^3.8.7",
+    "react": "^19.2.8",
+    "vitest": "^3.0.0"
+  }
+}
