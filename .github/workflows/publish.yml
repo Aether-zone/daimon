@@ -1,0 +1,66 @@
+name: Publish package
+
+on:
+  # `published`, not `created`: `created` does not fire when a draft release is
+  # published, which is how most releases are actually cut.
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: publish
+  # A publish that loses its package to a cancellation leaves a release with
+  # nothing to install, and a version number cannot be reused.
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      # Writes an .npmrc pointing the scope at npmjs and reading the token from
+      # NODE_AUTH_TOKEN, and sets NPM_CONFIG_USERCONFIG so pnpm reads it too.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+          scope: '@aether-zone'
+
+      - run: pnpm install --frozen-lockfile
+
+      # The gate, not a formality: a published version cannot be replaced, so
+      # anything wrong with it is wrong for good.
+      - run: pnpm lint
+
+      - run: pnpm typecheck
+
+      - run: pnpm test
+
+      # Publishing an unbuilt package would ship an empty dist — `files` lists
+      # only that directory, and every entry point in `exports` resolves into
+      # it.
+      - run: pnpm build
+
+      # `--access public` because a scoped package defaults to restricted, and
+      # publishing a restricted one needs a paid npm plan; the flag is also in
+      # `publishConfig`, so a publish run by hand behaves the same way.
+      #
+      # `--no-git-checks` because the release tag is what is published from, so
+      # HEAD is detached and the branch check has nothing to compare against.
+      #
+      # No `--provenance`: it needs a public repository to attest from, and this
+      # one is private. Worth turning on if that changes.
+      - name: Publish
+        run: pnpm publish --recursive --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
