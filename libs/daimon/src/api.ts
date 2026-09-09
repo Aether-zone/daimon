@@ -10,10 +10,7 @@
 
 /** The failures every aether-zone api can produce. */
 export type BaseFailureReason =
-  | 'unauthenticated'
-  | 'forbidden'
-  | 'notFound'
-  | 'unavailable';
+  'unauthenticated' | 'forbidden' | 'notFound' | 'unavailable';
 
 /**
  * A failed call.
@@ -36,8 +33,7 @@ export interface ApiFailure<ExtraReason extends string = never> {
 }
 
 export type ApiResult<T, ExtraReason extends string = never> =
-  | { ok: true; data: T }
-  | ApiFailure<ExtraReason>;
+  { ok: true; data: T } | ApiFailure<ExtraReason>;
 
 /**
  * What an aether-zone api sends when it refuses.
