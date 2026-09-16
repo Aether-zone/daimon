@@ -29,7 +29,7 @@ jobs:
 
       # Writes an .npmrc pointing the scope at npmjs and reading the token from
       # NODE_AUTH_TOKEN, and sets NPM_CONFIG_USERCONFIG so pnpm reads it too.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
