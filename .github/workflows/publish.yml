@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
       # Writes an .npmrc pointing the scope at npmjs and reading the token from
       # NODE_AUTH_TOKEN, and sets NPM_CONFIG_USERCONFIG so pnpm reads it too.
